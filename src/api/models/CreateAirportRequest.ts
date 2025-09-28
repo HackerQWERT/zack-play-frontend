@@ -2,13 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AirportResponse = {
+export type CreateAirportRequest = {
     code?: string;
     name?: string;
-    displayName?: string;
     city?: string;
     country?: string;
-    location?: string;
     timeZone?: string;
 };
 

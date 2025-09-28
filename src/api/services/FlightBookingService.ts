@@ -23,29 +23,6 @@ export class FlightBookingService {
         });
     }
     /**
-     * 搜索航班（简单查询）
-     * @param from
-     * @param to
-     * @param date
-     * @returns FlightSearchResponse OK
-     * @throws ApiError
-     */
-    public static getApiFlightBookingSearch(
-        from?: string,
-        to?: string,
-        date?: string,
-    ): CancelablePromise<Array<FlightSearchResponse>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/FlightBooking/Search',
-            query: {
-                'from': from,
-                'to': to,
-                'date': date,
-            },
-        });
-    }
-    /**
      * 搜索航班（复杂请求体）
      * @param requestBody
      * @returns FlightSearchResponse OK
@@ -120,7 +97,7 @@ export class FlightBookingService {
      */
     public static postApiFlightBookingCancel(
         reference?: string,
-        reason: string = null,
+        reason?: string,
     ): CancelablePromise<FlightBookingResponse> {
         return __request(OpenAPI, {
             method: 'POST',

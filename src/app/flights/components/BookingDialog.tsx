@@ -12,6 +12,10 @@ import {
   Collapse,
   Box,
   CircularProgress,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { useFlightStore } from "@/store/flightStore";
 import type { CreateFlightBookingRequest } from "@/api/models/CreateFlightBookingRequest";
@@ -35,11 +39,25 @@ export const BookingDialog: React.FC<Props> = ({ open, onCloseAction }) => {
     firstName: "",
     lastName: "",
     email: "",
+    gender: "",
+    passportNumber: "",
+    passportCountry: "",
+    nationality: "",
+    phoneNumber: "",
   });
 
   useEffect(() => {
     if (!open) {
-      setPassenger({ firstName: "", lastName: "", email: "" });
+      setPassenger({
+        firstName: "",
+        lastName: "",
+        email: "",
+        gender: "",
+        passportNumber: "",
+        passportCountry: "",
+        nationality: "",
+        phoneNumber: "",
+      });
       clearBooking();
     }
   }, [open, clearBooking]);
@@ -47,7 +65,17 @@ export const BookingDialog: React.FC<Props> = ({ open, onCloseAction }) => {
   if (!selectedFlight) return null;
 
   const submit = async () => {
-    if (!passenger.firstName || !passenger.lastName || !passenger.email) return;
+    if (
+      !passenger.firstName ||
+      !passenger.lastName ||
+      !passenger.email ||
+      !passenger.gender ||
+      !passenger.passportNumber ||
+      !passenger.passportCountry ||
+      !passenger.nationality ||
+      !passenger.phoneNumber
+    )
+      return;
     const payload: CreateFlightBookingRequest = {
       flightId: selectedFlight.id,
       passenger: passenger,
@@ -122,6 +150,52 @@ export const BookingDialog: React.FC<Props> = ({ open, onCloseAction }) => {
                 setPassenger((p) => ({ ...p, email: e.target.value }))
               }
             />
+            <FormControl size="small" fullWidth>
+              <InputLabel>性别</InputLabel>
+              <Select
+                value={passenger.gender}
+                label="性别"
+                onChange={(e) =>
+                  setPassenger((p) => ({ ...p, gender: e.target.value }))
+                }
+              >
+                <MenuItem value="Male">男</MenuItem>
+                <MenuItem value="Female">女</MenuItem>
+                <MenuItem value="Other">其他</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              size="small"
+              label="护照号码"
+              value={passenger.passportNumber}
+              onChange={(e) =>
+                setPassenger((p) => ({ ...p, passportNumber: e.target.value }))
+              }
+            />
+            <TextField
+              size="small"
+              label="护照国家"
+              value={passenger.passportCountry}
+              onChange={(e) =>
+                setPassenger((p) => ({ ...p, passportCountry: e.target.value }))
+              }
+            />
+            <TextField
+              size="small"
+              label="国籍"
+              value={passenger.nationality}
+              onChange={(e) =>
+                setPassenger((p) => ({ ...p, nationality: e.target.value }))
+              }
+            />
+            <TextField
+              size="small"
+              label="电话号码"
+              value={passenger.phoneNumber}
+              onChange={(e) =>
+                setPassenger((p) => ({ ...p, phoneNumber: e.target.value }))
+              }
+            />
           </div>
         )}
       </DialogContent>
@@ -137,7 +211,12 @@ export const BookingDialog: React.FC<Props> = ({ open, onCloseAction }) => {
               bookingSubmitting ||
               !passenger.firstName ||
               !passenger.lastName ||
-              !passenger.email
+              !passenger.email ||
+              !passenger.gender ||
+              !passenger.passportNumber ||
+              !passenger.passportCountry ||
+              !passenger.nationality ||
+              !passenger.phoneNumber
             }
             startIcon={
               bookingSubmitting ? <CircularProgress size={18} /> : undefined
