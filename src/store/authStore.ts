@@ -1,6 +1,7 @@
 "use client";
 import { create } from "zustand";
 import { AuthService } from "@/api/services/AuthService";
+import { OpenAPI } from "@/api/core/OpenAPI";
 import type { LoginRequest } from "@/api/models/LoginRequest";
 import type { LoginResponse } from "@/api/models/LoginResponse";
 import type { AuthenticatedUser } from "@/api/models/AuthenticatedUser";
@@ -29,7 +30,17 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
     loading: false,
     error: undefined,
     user: undefined,
-    accessToken: undefined,
+    accessToken: (() => {
+        // 初始化时从localStorage获取token并设置到OpenAPI
+        if (typeof window !== 'undefined') {
+            const token = localStorage.getItem('accessToken');
+            if (token) {
+                OpenAPI.TOKEN = token;
+            }
+            return token || undefined;
+        }
+        return undefined;
+    })(),
 
     setUsernameOrEmail: (value) => set({ usernameOrEmail: value }),
     setPassword: (value) => set({ password: value }),
@@ -49,6 +60,8 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
         try {
             const response: LoginResponse = await AuthService.postApiAuthLogin(loginRequest);
             localStorage.setItem("accessToken", response.accessToken || "");
+            // 设置OpenAPI token以便后续请求自动携带
+            OpenAPI.TOKEN = response.accessToken;
             set({
                 user: response.user,
                 accessToken: response.accessToken,
@@ -61,6 +74,8 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
     logout: () => {
         localStorage.removeItem("accessToken");
+        // 清除OpenAPI token
+        OpenAPI.TOKEN = undefined;
         set({
             user: undefined,
             accessToken: undefined,
