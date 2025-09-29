@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AirportResponse } from '../models/AirportResponse';
+import type { CancelFlightBookingRequest } from '../models/CancelFlightBookingRequest';
 import type { CreateFlightBookingRequest } from '../models/CreateFlightBookingRequest';
 import type { FlightBookingResponse } from '../models/FlightBookingResponse';
 import type { FlightSearchRequest } from '../models/FlightSearchRequest';
@@ -90,22 +91,18 @@ export class FlightBookingService {
     }
     /**
      * 取消预订
-     * @param reference
-     * @param reason
+     * @param requestBody
      * @returns FlightBookingResponse OK
      * @throws ApiError
      */
     public static postApiFlightBookingCancel(
-        reference?: string,
-        reason?: string,
+        requestBody: CancelFlightBookingRequest,
     ): CancelablePromise<FlightBookingResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/FlightBooking/Cancel',
-            query: {
-                'reference': reference,
-                'reason': reason,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
     /**
@@ -123,22 +120,6 @@ export class FlightBookingService {
             query: {
                 'passengerId': passengerId,
             },
-        });
-    }
-    /**
-     * 创建预订（会自动发布领域事件到MQ）
-     * @param requestBody
-     * @returns any OK
-     * @throws ApiError
-     */
-    public static postApiFlightBookingSubmitBooking(
-        requestBody: CreateFlightBookingRequest,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/FlightBooking/SubmitBooking',
-            body: requestBody,
-            mediaType: 'application/json',
         });
     }
 }

@@ -1,0 +1,11 @@
+{
+    "login": {
+        "title": "登录您的账户",
+        "usernameOrEmail": "用户名或邮箱",
+        "password": "密码",
+        "rememberMe": "记住我",
+        "loginButton": "登录",
+        "loggingIn": "登录中...",
+        "loginFailed": "登录失败"
+    }
+}

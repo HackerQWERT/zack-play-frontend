@@ -1,0 +1,11 @@
+{
+    "login": {
+        "title": "Sign in to your account",
+        "usernameOrEmail": "Username or Email",
+        "password": "Password",
+        "rememberMe": "Remember me",
+        "loginButton": "Sign in",
+        "loggingIn": "Signing in...",
+        "loginFailed": "Login failed"
+    }
+}
